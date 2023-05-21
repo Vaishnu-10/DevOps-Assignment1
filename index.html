@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input,
+    textarea {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+    }
+
+    #successMessage,
+    #errorMessage {
+      margin-top: 20px;
+      padding: 10px;
+      color: #fff;
+      font-weight: bold;
+      display: none;
+    }
+
+    #successMessage {
+      background-color: #4CAF50;
+    }
+
+    #errorMessage {
+      background-color: #f44336;
+    }
+
+    .hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h2>Contact Form</h2>
+  <form id="contactForm" action="#" method="post">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <textarea id="message" placeholder="Your Message" required></textarea>
+    <button type="submit">Send Message</button>
+  </form>
+  <div id="successMessage" class="hidden">Message sent successfully!</div>
+  <div id="errorMessage" class="hidden">Error sending message. Please try again later.</div>
+  
+  <script>
+    document.getElementById("contactForm").addEventListener("submit", function(event) {
+      event.preventDefault(); // Prevent form submission
+
+      // Get form values
+      var name = document.getElementById("name").value;
+      var email = document.getElementById("email").value;
+
+      // Create a new FormData object
+      var formData = new FormData();
+      formData.append("name", name);
+      formData.append("email", email);
+
+      // Send form data using an AJAX request
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "process_form.php"); // Replace "process_form.php" with your server-side script URL
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            showSuccessMessage();
+          } else {
+            showErrorMessage();
+          }
+        }
+      };
+      xhr.send(formData);
+    });
+
+    function showSuccessMessage() {
+      document.getElementById("successMessage").style.display = "block";
+      clearForm();
+    }
+
+    function showErrorMessage() {
+      document.getElementById("errorMessage").style.display = "block";
+    }
+
+    function clearForm() {
+      document.getElementById("name").value = "";
+      document.getElementById("email").value = "";
+    }
+  </script>
+</body>
+</html>
